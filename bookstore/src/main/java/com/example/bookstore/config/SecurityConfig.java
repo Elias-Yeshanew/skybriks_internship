@@ -11,10 +11,20 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.example.bookstore.security.JwtAuthFilter;
 
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -25,13 +35,19 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/api/register", "/api/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/books").permitAll()
-                .requestMatchers("/api/books/**").permitAll()
-                .requestMatchers("/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/user/register", "/api/user/login").permitAll()
+                // .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
+                // .requestMatchers(HttpMethod.POST, "/api/books").permitAll()
+                // .requestMatchers("/api/books/**").permitAll()
+                // .requestMatchers("/**").permitAll()
+                .requestMatchers(
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/swagger-ui.html"
+            ).permitAll()
                 .anyRequest().authenticated()
-            );
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

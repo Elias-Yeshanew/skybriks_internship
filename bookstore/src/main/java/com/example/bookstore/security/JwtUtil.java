@@ -1,6 +1,8 @@
 package com.example.bookstore.security;
 
 import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetails;
+import io.jsonwebtoken.Claims;
 
 import io.jsonwebtoken.Jwts;
 import java.util.Date;
@@ -52,5 +54,23 @@ public class JwtUtil {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public boolean validateToken( String Token, UserDetails userDetails){
+        return extractUsername(Token).equals(userDetails.getUsername()) && isTokenValid(Token);
+    }
+
+    public Boolean isTokenExpired(String Token){
+        return extractAllClaims(Token)
+            .getExpiration()
+            .before(new Date());
+    }
+
+    private Claims extractAllClaims(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
