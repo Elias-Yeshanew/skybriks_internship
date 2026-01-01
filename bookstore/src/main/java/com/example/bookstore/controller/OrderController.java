@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.bookstore.entity.Order;
 import com.example.bookstore.service.OrderService;
@@ -26,31 +27,31 @@ public class OrderController {
     }
 
     @GetMapping
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     @GetMapping("/{id}")
-    // @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     public OrderService getOrderService() {
         return orderService;
     }
 
     @PostMapping
-    // @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public Order placeOrder(@RequestParam String userEmail, @RequestBody List<Long> bookIds) {
         return orderService.placeOrder(userEmail, bookIds);
     }
 
     @PutMapping("/{id}/status")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Order updateOrderStatus(@PathVariable Long id, @RequestBody String status) {
         return orderService.updateOrderStatus(id, status);
     }
 
     @PutMapping("/{id}/payment-status")
-    // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Order updatePaymentStatus(@PathVariable Long id, @RequestBody String status) {
         return orderService.updatePaymentStatus(id, status);
     }
