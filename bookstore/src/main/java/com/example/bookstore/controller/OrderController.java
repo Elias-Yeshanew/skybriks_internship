@@ -27,31 +27,30 @@ public class OrderController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority(\"ADMIN\")")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    public OrderService getOrderService() {
-        return orderService;
+    public Order getOrderService(@PathVariable Long id) {
+        return orderService.getOrderById(id);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority(\"CUSTOMER\")")
     public Order placeOrder(@RequestParam String userEmail, @RequestBody List<Long> bookIds) {
         return orderService.placeOrder(userEmail, bookIds);
     }
 
     @PutMapping("/{id}/status")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Order updateOrderStatus(@PathVariable Long id, @RequestBody String status) {
         return orderService.updateOrderStatus(id, status);
     }
 
     @PutMapping("/{id}/payment-status")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Order updatePaymentStatus(@PathVariable Long id, @RequestBody String status) {
         return orderService.updatePaymentStatus(id, status);
     }

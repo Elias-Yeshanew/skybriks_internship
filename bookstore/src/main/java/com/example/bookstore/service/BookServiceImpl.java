@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.bookstore.entity.Book;
+import com.example.bookstore.exception.ResourceNotFoundException;
 import com.example.bookstore.repository.BookRepository;
 
 @Service
@@ -24,7 +25,7 @@ public class BookServiceImpl implements BookService  {
     @Override
     public Book getBookById(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Book not found with id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id " + id));
     }
 
     @Override

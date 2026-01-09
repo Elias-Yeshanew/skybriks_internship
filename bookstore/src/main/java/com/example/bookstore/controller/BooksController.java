@@ -2,6 +2,7 @@ package com.example.bookstore.controller;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class BooksController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority(\"ADMIN\")")
     public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
@@ -36,16 +38,19 @@ public class BooksController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority(\"ADMIN\")")
     public Book createBook(@RequestBody Book book) {
         return bookService.createBook(book);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"ADMIN\")")
     public Book updateBook(@PathVariable Long id, @RequestBody Book bookDetails) {
         return bookService.updateBook(id, bookDetails);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority(\"ADMIN\")")
     public void deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
     }
