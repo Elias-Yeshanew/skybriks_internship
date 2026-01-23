@@ -27,7 +27,7 @@ public class OrderController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(\"ADMIN\")")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
@@ -38,7 +38,7 @@ public class OrderController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority(\"CUSTOMER\")")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public Order placeOrder(@RequestParam String userEmail, @RequestBody List<Long> bookIds) {
         return orderService.placeOrder(userEmail, bookIds);
     }

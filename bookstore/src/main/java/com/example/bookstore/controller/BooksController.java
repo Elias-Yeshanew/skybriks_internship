@@ -27,7 +27,7 @@ public class BooksController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(\"ADMIN\")")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
@@ -38,19 +38,19 @@ public class BooksController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority(\"ADMIN\")")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Book createBook(@RequestBody Book book) {
         return bookService.createBook(book);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority(\"ADMIN\")")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Book updateBook(@PathVariable Long id, @RequestBody Book bookDetails) {
         return bookService.updateBook(id, bookDetails);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority(\"ADMIN\")")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
     }
