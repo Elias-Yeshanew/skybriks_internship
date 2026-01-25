@@ -33,4 +33,17 @@ public class SupplierController {
     public Supplier createSupplier(@RequestBody Supplier supplier){
         return supplierService.createSupplier(supplier);
     }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PURCHASE_MANAGER')")
+    public Supplier updateSupplier(@PathVariable Long id, @RequestBody Supplier supplier){
+        return supplierService.updateSupplier(id, supplier);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Void deleteSupplier(@PathVariable Long id){
+        supplierService.deleteSupplier(id);
+        return null;
+    }
 }
