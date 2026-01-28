@@ -41,4 +41,28 @@ public class SalesServiceImpl implements SalesService {
         order.setStatus(OrderStatus.ORDERED);
         retrun salesOrderRepository.save(order);
     }
+
+    @Override
+    public List<SalesOrder> getAllSalesOrders(){
+        return salesOrderRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Invoice generateInvoice(Long salesOrderId){
+        SalesOrder so = salesOrderRepository.findById(salesOrderId)
+                .orElseThrow(() -> new RuntimeException("Sales Order not found with id " + salesOrderId));
+        
+        Invoice invoice = new Invoice();
+        invoice.setSalesOrder(so);
+        invoice.setInvoiceNumber("INV-"+UUID.randomUUID().toString().substring(0,8).toUpperCase());
+
+        double tax = so.getTotalPayable() * 0.15; 
+        invoice.setTaxAmount(tax);
+        invoice.setTotalPayable(so.getTotalPayable() + tax);
+        invoice.setStatus("UNPAID");
+
+        retrun invoiceRepository.save(invoice);
+
+    }
 }
