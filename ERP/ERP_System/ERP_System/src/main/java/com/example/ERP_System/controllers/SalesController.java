@@ -18,19 +18,19 @@ public class SalesController {
     @PostMapping("/orders")
     @PreAuthorize("hasRole('SALES_EXECUTIVE') or hasRole('ADMIN')")
     public SalesOrder createSalesOrder(@RequestBody SalesOrder salesOrder){
-        return salesService.CreateSalesOrder(salesOrder);
+        return salesService.createSalesOrder(salesOrder);
     }
 
     @GetMapping("/orders")
     @PreAuthorize("hasRole('SALES_EXECUTIVE') or hasRole('ADMIN')")
     public List<SalesOrder> getAllOrders(){
-        return salesService.GetAllSalesOrders();
+        return salesService.getAllSalesOrders();
     }
 
     @PostMapping("/orders/{soId}")
     @PreAuthorize("hasRole('SALES_EXECUTIVE') or hasRole('ADMIN')")
     public Invoice generateInvoice(@PathVariable Long soId){
-        return salesService.GenerateInvoice(soId);
+        return salesService.generateInvoice(soId);
     }
 
 }

@@ -1,12 +1,18 @@
 package com.example.ERP_System.services;
 
-import com.example.ERP_System.models.*;
 import com.example.ERP_System.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.ERP_System.models.SalesOrderItem;
+import com.example.ERP_System.models.Product;
+import com.example.ERP_System.models.OrderStatus;
+import com.example.ERP_System.models.Invoice;
+import com.example.ERP_System.models.SalesOrder;
+
 import java.util.List;
 import  java.util.UUID;
+import java.math.BigDecimal;
 
 @Service
 public class SalesServiceImpl implements SalesService {
@@ -34,12 +40,14 @@ public class SalesServiceImpl implements SalesService {
             product.setCurrentStock(product.getCurrentStock() - item.getQuantity());
             productRepository.save(product);
 
-            total += product.getUnitPrice() * item.getQuantity();
+            total += product.getUnitPrice()
+                    .multiply(BigDecimal.valueOf(item.getQuantity()))
+                    .doubleValue();
         }
 
         order.setTotalAmount(total);
         order.setStatus(OrderStatus.ORDERED);
-        retrun salesOrderRepository.save(order);
+        return salesOrderRepository.save(order);
     }
 
     @Override
@@ -52,17 +60,24 @@ public class SalesServiceImpl implements SalesService {
     public Invoice generateInvoice(Long salesOrderId){
         SalesOrder so = salesOrderRepository.findById(salesOrderId)
                 .orElseThrow(() -> new RuntimeException("Sales Order not found with id " + salesOrderId));
-        
+
         Invoice invoice = new Invoice();
         invoice.setSalesOrder(so);
         invoice.setInvoiceNumber("INV-"+UUID.randomUUID().toString().substring(0,8).toUpperCase());
 
-        double tax = so.getTotalPayable() * 0.15; 
+        double tax = so.getTotalAmount() * 0.15; // Assuming 15% tax rate
         invoice.setTaxAmount(tax);
-        invoice.setTotalPayable(so.getTotalPayable() + tax);
+        invoice.setTotalPayable(so.getTotalAmount() + tax);
         invoice.setStatus("UNPAID");
 
-        retrun invoiceRepository.save(invoice);
+        return invoiceRepository.save(invoice);
 
+    }
+
+    @Override
+    @Transactional
+    public SalesOrder getSalesOrderById(Long id){
+        return salesOrderRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Sales Order not found with id " + id));
     }
 }
