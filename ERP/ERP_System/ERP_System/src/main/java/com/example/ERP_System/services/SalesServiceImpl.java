@@ -63,13 +63,12 @@ public class SalesServiceImpl implements SalesService {
 
         Invoice invoice = new Invoice();
         invoice.setSalesOrder(so);
-        invoice.setInvoiceNumber("INV-"+UUID.randomUUID().toString().substring(0,8).toUpperCase());
+        invoice.setInvoiceNumber("INV-" + UUID.randomUUID().toString().substring(0,8).toUpperCase());
 
         double tax = so.getTotalAmount() * 0.15; // Assuming 15% tax rate
         invoice.setTaxAmount(tax);
         invoice.setTotalPayable(so.getTotalAmount() + tax);
         invoice.setStatus("UNPAID");
-
         return invoiceRepository.save(invoice);
 
     }
