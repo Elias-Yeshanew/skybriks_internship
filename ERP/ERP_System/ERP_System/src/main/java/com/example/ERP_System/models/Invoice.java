@@ -1,6 +1,5 @@
 package com.example.ERP_System.models;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
