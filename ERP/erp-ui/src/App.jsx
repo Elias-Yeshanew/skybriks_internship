@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Layout from './components/Layout';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import Products from './pages/Products';
+import Sales from './pages/Sales';
+import Purchases from './pages/Purchases';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Layout><Dashboard /></Layout>
+            </ProtectedRoute>
+          } />
+
+          {/* We will add more routes here for Products, Sales, etc. */}
+
+          <Route path="/" element={<Login />} />
+          <Route path="/products" element={
+            <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_INVENTORY_MANAGER','ROLE_SALES_EXECUTIVE']}>
+            <Layout><Products /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/sales" element={
+            <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_SALES_EXECUTIVE']}>
+              <Layout><Sales /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/purchases" element={
+            <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_PURCHASE_MANAGER', 'ROLE_INVENTORY_MANAGER']}>
+              <Layout><Purchases /></Layout>
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
