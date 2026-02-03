@@ -16,7 +16,7 @@ public class Customer {
     private String name;
 
     private String email;
-    private String Phone;
-    private String Address;
+    private String phone;
+    private String address;
     private String gstin;
 }
