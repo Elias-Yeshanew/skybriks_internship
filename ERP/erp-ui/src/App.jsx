@@ -7,6 +7,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Products from './pages/Products';
 import Sales from './pages/Sales';
 import Purchases from './pages/Purchases';
+import Customers from './pages/Customers';
+import Suppliers from './pages/Suppliers';
 
 function App() {
   return (
@@ -37,6 +39,16 @@ function App() {
           <Route path="/purchases" element={
             <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_PURCHASE_MANAGER', 'ROLE_INVENTORY_MANAGER']}>
               <Layout><Purchases /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/customers" element={
+            <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_PURCHASE_MANAGER', 'ROLE_INVENTORY_MANAGER']}>
+              <Layout><Customers /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/suppliers" element={
+            <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_PURCHASE_MANAGER', 'ROLE_INVENTORY_MANAGER']}>
+              <Layout><Suppliers /></Layout>
             </ProtectedRoute>
           } />
         </Routes>
