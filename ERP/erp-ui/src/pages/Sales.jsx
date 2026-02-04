@@ -83,6 +83,23 @@ const Sales = () => {
         }
     };
 
+    const downloadInvoice = async (orderId) => {
+        try {
+            const response = await api.get(`/sales/orders/${orderId}/pdf`, {
+                responseType: 'blob',
+            });
+
+            const url = WindowSharp.URL.createObjectUurl(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `invoice_${orderId}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            alert("Error downloading PDF");
+        }
+    };
+
     return (
         <Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
@@ -114,6 +131,11 @@ const Sales = () => {
                                     <span style={{ color: order.status === 'ORDERED' ? 'green' : 'orange', fontWeight: 'bold' }}>
                                         {order.status}
                                     </span>
+                                </TableCell>
+                                <TableCell>
+                                    <IconButton color="primary" onClick={() => downloadInvoice(order.id)}>
+                                        <ReceiptIcon />
+                                    </IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}
