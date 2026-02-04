@@ -79,4 +79,11 @@ public class SalesServiceImpl implements SalesService {
         return salesOrderRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Sales Order not found with id " + id));
     }
+
+    @Override
+    @Transactional
+    public SalesOrder getOrderById(Long id){
+        return salesOrderRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Sales Order not found with id " + id));
+    }
 }

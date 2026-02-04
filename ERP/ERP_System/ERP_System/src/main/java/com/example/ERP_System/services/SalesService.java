@@ -11,4 +11,5 @@ public interface SalesService {
     Invoice generateInvoice(Long salesOrderId);
     List<SalesOrder> getAllSalesOrders();
     SalesOrder getSalesOrderById(Long id);
+    SalesOrder getOrderById(Long id);
 }

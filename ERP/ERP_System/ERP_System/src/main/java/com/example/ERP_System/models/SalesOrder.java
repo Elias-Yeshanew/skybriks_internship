@@ -1,5 +1,6 @@
 package com.example.ERP_System.models;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -36,6 +37,8 @@ public class SalesOrder {
     private List<SalesOrderItem> items;
 
     private double totalAmount;
+
+    private LocalDate orderDate = LocalDate.now();
 
 
 }
