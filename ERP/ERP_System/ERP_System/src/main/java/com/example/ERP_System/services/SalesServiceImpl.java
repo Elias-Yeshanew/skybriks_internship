@@ -69,6 +69,7 @@ public class SalesServiceImpl implements SalesService {
         invoice.setTaxAmount(tax);
         invoice.setTotalPayable(so.getTotalAmount() + tax);
         invoice.setStatus("UNPAID");
+        System.out.println("Tax" + tax);
         return invoiceRepository.save(invoice);
 
     }
@@ -85,5 +86,11 @@ public class SalesServiceImpl implements SalesService {
     public SalesOrder getOrderById(Long id){
         return salesOrderRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Sales Order not found with id " + id));
+    }
+
+    @Override
+    public Invoice getInvoiceByOrderId(Long soId){
+        return invoiceRepository.findBySalesOrderId(soId)
+            .orElseThrow(() -> new  RuntimeException("Order not found by Order Id" + soId));
     }
 }

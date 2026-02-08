@@ -1,6 +1,7 @@
 package com.example.ERP_System.services;
 
 import com.example.ERP_System.models.SalesOrder;
+import com.example.ERP_System.models.Invoice;
 import com.example.ERP_System.models.SalesOrderItem;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
@@ -11,7 +12,7 @@ import java.io.IOException;
 @Service
 public class PdfService {
 
-    public void generateInvoice(HttpServletResponse response, SalesOrder order) throws IOException {
+    public void generateInvoice(HttpServletResponse response, SalesOrder order, Invoice invoice) throws IOException {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document,response.getOutputStream());
 
@@ -25,6 +26,7 @@ public class PdfService {
         document.add(title);
 
         document.add(new Paragraph("Order ID: #SO-"+ order.getId()));
+        document.add(new Paragraph("invoice Number :" + invoice.getInvoiceNumber()));
         document.add(new Paragraph("Customer: " +  order.getCustomer().getName()));
         document.add(new Paragraph("Date: " + order.getOrderDate().toString()));
         document.add(new Paragraph(" "));
@@ -45,7 +47,14 @@ public class PdfService {
 
         document.add(table);
         document.add(new Paragraph(" "));
-        document.add(new Paragraph("Total Amount: $" + order.getTotalAmount(), fontTitle));
+        Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        document.add(new Paragraph("SubTotal: $" + order.getTotalAmount()));
+        document.add(new Paragraph("Tax (15%): $" + invoice.getTaxAmount()));
+        document.add(new Paragraph("-------------------"));
+
+        Paragraph total = new Paragraph("Total Payable: $" + invoice.getTotalPayable(), boldFont);
+        total.setAlignment(Paragraph.ALIGN_RIGHT);
+        document.add(total);
 
         document.close();
     }

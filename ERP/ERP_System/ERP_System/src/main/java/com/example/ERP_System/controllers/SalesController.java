@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import com.example.ERP_System.services.PdfService;
 import com.example.ERP_System.models.SalesOrder;
 import com.example.ERP_System.services.SalesService;
+import com.example.ERP_System.services.InvoiceService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 import com.example.ERP_System.models.Invoice;
+
 import java.util.List;
 import java.io.IOException;
 
@@ -21,6 +23,7 @@ public class SalesController {
 
     @Autowired private SalesService salesService;
     @Autowired private PdfService pdfService;
+    @Autowired private InvoiceService invoiceService;
 
     @PostMapping("/orders")
     @PreAuthorize("hasRole('SALES_EXECUTIVE') or hasRole('ADMIN')")
@@ -48,7 +51,10 @@ public class SalesController {
         response.setHeader(headerKey, headerValue);
 
         SalesOrder order = salesService.getOrderById(id);
-        pdfService.generateInvoice(response, order);
+
+        Invoice invoice = invoiceService.getInvoiceByOrderId(id);
+        
+        pdfService.generateInvoice(response, order, invoice);
     }
 
 }
