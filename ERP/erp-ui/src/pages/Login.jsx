@@ -27,7 +27,7 @@ const handleSubmit = async (e) =>{
 };
 
 return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10, ml:50}}>
             <Paper sx={{ p: 4, width: 400 }}>
                 <Typography variant="h5" gutterBottom>ERP System Login</Typography>
                 <form onSubmit={handleSubmit}>
