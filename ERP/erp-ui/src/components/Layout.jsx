@@ -18,6 +18,7 @@ const Layout = ({ children }) => {
         { text: 'Suppliers', icon: <LocalShipping />, path: '/suppliers', roles: ['ROLE_ADMIN', 'ROLE_PURCHASE_MANAGER'] },
         { text: 'Sales Orders', icon: <ShoppingCart />, path: '/sales', roles: ['ROLE_ADMIN', 'ROLE_SALES_EXECUTIVE'] },
         { text: 'Purchase Orders', icon: <Assessment />, path: '/purchases', roles: ['ROLE_ADMIN', 'ROLE_PURCHASE_MANAGER'] },
+        {text: 'Staff Management', icon: <People />, path: '/users', roles :['ROLE_ADMIN']},
     ];
 
     const drawer = (

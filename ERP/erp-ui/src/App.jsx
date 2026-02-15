@@ -9,6 +9,7 @@ import Sales from './pages/Sales';
 import Purchases from './pages/Purchases';
 import Customers from './pages/Customers';
 import Suppliers from './pages/Suppliers';
+import UserManagement from './pages/UserManagement';
 
 function App() {
   return (
@@ -49,6 +50,11 @@ function App() {
           <Route path="/suppliers" element={
             <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_PURCHASE_MANAGER', 'ROLE_INVENTORY_MANAGER']}>
               <Layout><Suppliers /></Layout>
+            </ProtectedRoute>
+          } />
+          <Route path='/users' element={
+            <ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
+              <Layout><UserManagement /></Layout>
             </ProtectedRoute>
           } />
         </Routes>
