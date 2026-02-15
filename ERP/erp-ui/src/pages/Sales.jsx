@@ -100,6 +100,39 @@ const Sales = () => {
         }
     };
 
+    // 1. Function to Generate the Invoice record in the Database
+    const handleGenerateInvoice = async (orderId) => {
+        try {
+            await api.post(`/invoices/generate/${orderId}`);
+            alert("Invoice generated successfully with 18% tax!");
+            fetchData(); // Refresh the list so the UI knows the invoice now exists
+        } catch (error) {
+            console.error("Error generating invoice", error);
+            alert("Failed to generate invoice. Make sure you have permission.");
+        }
+    };
+
+    // 2. Function to Download the PDF
+    const handleDownloadPDF = async (orderId) => {
+        try {
+            const response = await api.get(`/sales/orders/${orderId}/pdf`, {
+                responseType: 'blob', // Crucial for PDF files
+            });
+
+            // Create a download link for the PDF blob
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Invoice_Order_${orderId}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            console.error("Error downloading PDF", error);
+            alert("Could not download PDF. Does the Invoice exist? (Try generating it first)");
+        }
+    };
+
     return (
         <Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
@@ -132,10 +165,32 @@ const Sales = () => {
                                         {order.status}
                                     </span>
                                 </TableCell>
-                                <TableCell>
+                                {/* <TableCell>
                                     <IconButton color="primary" onClick={() => downloadInvoice(order.id)}>
                                         <ReceiptIcon />
                                     </IconButton>
+                                </TableCell> */}
+                                <TableCell>
+                                    {/* Action Buttons */}
+                                    <Box sx={{ display: 'flex', gap: 1 }}>
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            color="secondary"
+                                            onClick={() => handleGenerateInvoice(order.id)}
+                                        >
+                                            Generate Invoice
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            size="small"
+                                            color="primary"
+                                            startIcon={<ReceiptIcon />}
+                                            onClick={() => handleDownloadPDF(order.id)}
+                                        >
+                                            PDF
+                                        </Button>
+                                    </Box>
                                 </TableCell>
                             </TableRow>
                         ))}
