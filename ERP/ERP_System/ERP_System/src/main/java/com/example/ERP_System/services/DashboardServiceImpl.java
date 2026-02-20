@@ -20,6 +20,9 @@ public class DashboardServiceImpl implements DashboardService{
     @Autowired
     private PurchaseOrderRepository purchaseOrderRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Override
     public DashboardSummary getDashboardSummary(){
@@ -29,6 +32,7 @@ public class DashboardServiceImpl implements DashboardService{
         Double purchase = purchaseOrderRepository.sumTotalPurchase();
         long lowStock = productRepository.countLowStockProducts();
         long pending = purchaseOrderRepository.countPendingOrders();
+        long users = userRepository.count();
 
         return new DashboardSummary(
             products,
@@ -36,7 +40,8 @@ public class DashboardServiceImpl implements DashboardService{
             sales != null ? sales : 0.0,
             purchase != null ? purchase : 0.0,
             lowStock,
-            pending
+            pending,
+            users
         );
     }
 }

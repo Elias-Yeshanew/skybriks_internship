@@ -12,4 +12,5 @@ public class DashboardSummary {
     private Double totalPurchaseAmount;
     private long lowStockCount;
     private long pendingOrders;
+    private long users;
 }

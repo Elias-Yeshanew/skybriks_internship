@@ -46,6 +46,9 @@ const Dashboard = () => {
                 <Grid item xs={12} sm={6} md={4}>
                     <DashboardCard title="Pending POs" value={summary.pendingOrders} icon={<PendingActions fontSize="large" />} color="#d32f2f" />
                 </Grid>
+                <Grid item xs={12} sm={6} md={4}>
+                    <DashboardCard title="Users" value={summary.users} icon={<People fontSize="large" />} color="#757575" />
+                </Grid>
             </Grid>
         </Box>
     );
