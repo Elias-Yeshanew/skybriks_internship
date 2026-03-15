@@ -1,0 +1,47 @@
+<div style="max-width: 600px; margin: 0 auto;">
+    <h2>{{ isEditMode ? 'Update Intern' : 'Intern Registration' }}</h2>
+    <form [formGroup]="internForm" (ngSubmit)="onsubmit()">
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="name" placeholder="Enter full name">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" placeholder="Enter email" type="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Mobile Number (10 digits)</mat-label>
+            <input matInput formControlName="phone">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>ID Card Type</mat-label>
+            <mat-select formControlName="idCardType">
+                <mat-option value="Free">Free</mat-option>
+                <mat-option value="Premium">Premium</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Joining Date</mat-label>
+            <input matInput type="date" formControlName="joiningDate">
+        </mat-form-field>
+
+        <div formGroupName="batch">
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Select Batch</mat-label>
+                <mat-select formControlName="id">
+                    <mat-option *ngFor="let b of batches" [value]="b.id">
+                        Batch ID #{{b.id}} (Starts: {{b.startDate}})
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <button mat-raised-button color="accent" type="submit" [disabled]="internForm.invalid">
+            {{ isEditMode ? 'Update Intern' : 'Register Intern' }}
+        </button>
+    </form>
+</div>

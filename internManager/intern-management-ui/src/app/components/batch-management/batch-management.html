@@ -1,0 +1,77 @@
+<div>
+    <h2 style="margin-bottom: 20px;">Batch Management</h2>
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+        <mat-form-field appearance="outline">
+            <mat-label>Batch Start Date</mat-label>
+            <input matInput type="date" [(ngModel)]="startDate">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="createBatch()">Create Batch</button>
+    </div>
+
+    <table mat-table [dataSource]="batches" multiTemplateDataRows class="mat-elevation-z8" style="width: 100%;">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef> Start Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.startDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef> End Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.endDate}} </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button color="warn" (click)="deleteBatch(element.id, $event)">Delete</button>
+            </td>
+        </ng-container>
+
+        <!-- Expanded Content Column -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                <div class="example-element-detail"
+                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div
+                        style="padding: 20px; width: 100%; background: var(--surface-hover); border-radius: 8px; margin: 10px 0;">
+                        <h4 style="margin-bottom: 10px; color: var(--primary);">Interns in Batch #{{element.id}}</h4>
+                        <div *ngIf="element.interns && element.interns.length > 0; else noInterns">
+                            <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                                <tr>
+                                    <th style="padding: 8px; border-bottom: 1px solid var(--border-color);">Intern ID
+                                    </th>
+                                    <th style="padding: 8px; border-bottom: 1px solid var(--border-color);">Name</th>
+                                    <th style="padding: 8px; border-bottom: 1px solid var(--border-color);">Email</th>
+                                </tr>
+                                <tr *ngFor="let intern of element.interns">
+                                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">
+                                        {{intern.internIdStr}}</td>
+                                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">
+                                        {{intern.name}}</td>
+                                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">
+                                        {{intern.email}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <ng-template #noInterns>
+                            <p style="color: var(--text-secondary);">No interns are currently assigned to this batch.
+                            </p>
+                        </ng-template>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+            [class.example-expanded-row]="expandedElement === element"
+            (click)="expandedElement = expandedElement === element ? null : element">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+</div>

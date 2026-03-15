@@ -1,0 +1,13 @@
+<!-- Navigation Bar -->
+<mat-toolbar color="primary" class="app-header">
+  <span class="logo-text">Intern Management</span>
+  <span style="flex: 1 1 auto;"></span>
+  <a mat-button routerLink="/interns">Intern List</a>
+  <a mat-button routerLink="/register">Add Intern</a>
+  <a mat-button routerLink="/batches">Manage Batches</a>
+</mat-toolbar>
+
+<!-- Main Page Content -->
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
